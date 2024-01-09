@@ -2,6 +2,7 @@ models/*.pt
 data/processed/*.pt
 reports/figures/*
 outputs
+wandb
 
 docs/site/
 

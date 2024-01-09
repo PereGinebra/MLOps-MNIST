@@ -6,6 +6,7 @@ from torch.nn import CrossEntropyLoss
 import matplotlib.pyplot as plt
 import numpy as np
 import hydra
+import wandb
 
 from models.model import SimpleCNN
 from data.dataset import mnist
@@ -14,6 +15,7 @@ from log.my_logger import logger
 @hydra.main(config_path='../',config_name='config.yaml',version_base='1.2')
 def train(cfg):
     """Train a model on MNIST."""
+    wandb.init(config=dict(cfg.hyperparams))
     torch.manual_seed(cfg.hyperparams.torch_seed)
 
     train_set, _ = mnist()
@@ -29,6 +31,7 @@ def train(cfg):
     logger.info(f'Training model on the {str(device)} device')
     #print(f'Training model on the {str(device)} device')
 
+    wandb.watch(model, log_freq=100)
     model.train()
     losses = []
     for epoch in range(epochs):
@@ -44,6 +47,7 @@ def train(cfg):
             optimizer.step()
 
             epoch_losses.append(loss.detach().cpu().item())
+            wandb.log({'loss':loss.detach().cpu().item()})
         
         logger.info(f'Epoch {epoch} training loss: {np.mean(epoch_losses)}')
         losses += epoch_losses
