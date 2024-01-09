@@ -1,0 +1,9 @@
+hydra:
+  job:
+    chdir: false
+  
+hyperparams:
+  lr: 1e-3
+  epochs: 15
+  batch_size: 64
+  torch_seed: 42

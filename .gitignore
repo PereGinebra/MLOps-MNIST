@@ -1,5 +1,7 @@
 models/*.pt
 data/processed/*.pt
+reports/figures/*
+outputs
 
 docs/site/
 

@@ -20,8 +20,10 @@ def predict(
         Tensor of shape [N, d] where N is the number of samples and d is the output dimension of the model
 
     """
-    model.to(torch.device('cpu'))
-    return torch.cat([model(batch).argmax(dim=-1) for batch in dataloader], 0)
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    model.to(device)
+    print(f'Predicting model on the {str(device)} device')
+    return torch.cat([model(batch.to(device)).argmax(dim=-1) for batch in dataloader], 0)
 
 class PredictionDataset(Dataset):
     def __init__(self, data):

@@ -1,30 +1,39 @@
 import os
 
 import torch
+from torch.utils.data import DataLoader
 from torch.nn import CrossEntropyLoss
 import matplotlib.pyplot as plt
 import numpy as np
+import hydra
 
 from models.model import SimpleCNN
 from data.dataset import mnist
+from log.my_logger import logger
 
-def train(lr = 0.001):
+@hydra.main(config_path='../',config_name='config.yaml',version_base='1.2')
+def train(cfg):
     """Train a model on MNIST."""
+    torch.manual_seed(cfg.hyperparams.torch_seed)
+
+    train_set, _ = mnist()
+    train_dl = DataLoader(train_set, batch_size=cfg.hyperparams.batch_size)
 
     model = SimpleCNN()
-    train_set, _ = mnist()
     loss_fn = CrossEntropyLoss()
-    optimizer = torch.optim.Adam(params=model.parameters(), lr=lr)
-    epochs = 15
+    optimizer = torch.optim.Adam(params=model.parameters(), lr=cfg.hyperparams.lr)
+    epochs = cfg.hyperparams.epochs
 
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     model.to(device)
+    logger.info(f'Training model on the {str(device)} device')
+    #print(f'Training model on the {str(device)} device')
 
     model.train()
     losses = []
     for epoch in range(epochs):
         epoch_losses = []
-        for img, label in train_set:
+        for img, label in train_dl:
             img = img.to(device)
             label = label.to(device)
 
@@ -36,7 +45,7 @@ def train(lr = 0.001):
 
             epoch_losses.append(loss.detach().cpu().item())
         
-        print(f'Epoch {epoch} training loss: {np.mean(epoch_losses)}')
+        logger.info(f'Epoch {epoch} training loss: {np.mean(epoch_losses)}')
         losses += epoch_losses
 
     numfiles = len(os.listdir('./models'))
@@ -44,7 +53,6 @@ def train(lr = 0.001):
 
     plt.plot(losses)
     plt.savefig(f'./reports/figures/latest_plot_{numfiles}.png')
-    plt.show()
 
 if __name__ == '__main__':
     train()
