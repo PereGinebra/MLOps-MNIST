@@ -1,6 +1,9 @@
 # Base image
 FROM python:3.11-slim
 
+ARG GDRIVE_CRED_FILE
+ENV GDRIVE_CREDENTIALS_DATA=$GDRIVE_CRED_FILE
+
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
@@ -8,6 +11,7 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY corrupt_mnist/ corrupt_mnist/
+COPY .dvc/  .dvc/
 
 WORKDIR /
 RUN --mount=type=cache,target=~/pip/.cache pip install -r requirements.txt --no-cache-dir
