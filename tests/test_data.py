@@ -11,7 +11,7 @@ from numpy import unique
 @pytest.mark.skipif(not os.path.exists('data/processed/test_target.pt'), reason="Test label file not found")
 def test_data():
     train, test = mnist()
-    assert len(train) == 30000, 'Unexpected size for training dataset'
+    assert len(train) == 50000, 'Unexpected size for training dataset'
     assert len(test) == 5000, 'Unexpected size for test dataset'
     assert [(image.shape, type(label.item())) for image, label in train] == [((28,28),int)]*len(train), 'Unexpected shape for some training datapoint'
     assert [(image.shape, type(label.item())) for image, label in test] == [((28,28),int)]*len(test), 'Unexpected shape for some testing datapoint'
