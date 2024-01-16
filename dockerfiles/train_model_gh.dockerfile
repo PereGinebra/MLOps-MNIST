@@ -1,9 +1,6 @@
 # Base image
 FROM python:3.11-slim
 
-ARG GDRIVE_CRED_FILE=0
-ENV GDRIVE_CREDENTIALS_DATA=$GDRIVE_CRED_FILE
-
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
