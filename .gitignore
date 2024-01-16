@@ -1,5 +1,5 @@
 models/*.pt
-data/processed/*.pt
+data/
 reports/figures/*
 outputs
 wandb
