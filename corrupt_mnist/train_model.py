@@ -8,9 +8,9 @@ import numpy as np
 import hydra
 import wandb
 
-from models.model import SimpleCNN
-from data.dataset import mnist
-from log.my_logger import logger
+from .models.model import SimpleCNN
+from .data.dataset import mnist
+from .log.my_logger import logger
 
 @hydra.main(config_path='../',config_name='config.yaml',version_base='1.2')
 def train(cfg):

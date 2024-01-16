@@ -12,6 +12,3 @@ def mnist():
     test_ds = TensorDataset(test_images, test_target)
 
     return train_ds, test_ds
-
-if __name__ == '__main__':
-    pass
