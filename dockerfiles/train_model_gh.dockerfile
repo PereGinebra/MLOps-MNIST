@@ -8,6 +8,7 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY corrupt_mnist/ corrupt_mnist/
+COPY .git/ .git/
 COPY .dvc/  .dvc/
 
 WORKDIR /
