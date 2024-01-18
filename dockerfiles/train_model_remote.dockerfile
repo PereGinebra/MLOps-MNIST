@@ -11,7 +11,8 @@ COPY corrupt_mnist/ corrupt_mnist/
 COPY .dvc/config ./dvc/config
 
 WORKDIR /
-RUN --mount=type=cache,target=~/pip/.cache pip install -r requirements.txt --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install dvc --no-cache-dir
 RUN dvc pull
 RUN pip install . --no-deps --no-cache-dir
 
