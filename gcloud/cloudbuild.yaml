@@ -1,0 +1,5 @@
+steps:
+    - name: 'gcr.io/cloud-builders/docker'
+        args: ['build', '-f', 'dockerfiles/train_model_remote.dockerfile', -t', 'gcr.io/corruptmnist/trainer', '.']
+    - name: 'gcr.io/cloud-builders/docker'
+        args: ['push', 'gcr.io/corruptmnist/trainer']

@@ -3,7 +3,7 @@ data/
 reports/figures/*
 outputs
 wandb
-
+gcloud/*.json
 docs/site/
 
 # test cache
