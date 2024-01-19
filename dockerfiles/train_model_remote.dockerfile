@@ -8,12 +8,12 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY corrupt_mnist/ corrupt_mnist/
-COPY .dvc/config ./dvc/config
-COPY data.dvc data.dvc
 
 WORKDIR /
 RUN pip install dvc --no-cache-dir
 RUN pip install "dvc[gs]" --no-cache-dir
+RUN dvc init --no-scm
+RUN dvc remote add -d remote_storage gs://corrupt_mnist_data_bucket/
 RUN dvc pull
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
