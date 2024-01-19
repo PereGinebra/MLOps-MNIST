@@ -9,11 +9,13 @@ COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY corrupt_mnist/ corrupt_mnist/
 COPY .dvc/config ./dvc/config
+COPY data.dvc data.dvc
 
 WORKDIR /
-RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install dvc --no-cache-dir
+RUN pip install "dvc[gs]" --no-cache-dir
 RUN dvc pull
+RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
 
 ENTRYPOINT ["python", "-u", "corrupt_mnist/train_model.py"]
